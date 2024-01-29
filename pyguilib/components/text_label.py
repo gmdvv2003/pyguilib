@@ -94,10 +94,10 @@ class TextLabel(PyGuiInstance):
 
         self._text_color = kwargs.get("text_color", Color(255, 255, 255, 255))
         self._text_transparency = kwargs.get("text_transparency", 255)
-        self._text_size = kwargs.get("text_size", 32)
-        self._text_font = kwargs.get("text_font", pygame.font.SysFont("Arial", 32))
+        self._text_size = kwargs.get("text_size", 16)
+        self._text_font = kwargs.get("text_font", pygame.font.SysFont("Arial", self._text_size))
 
-        self._text_border_color = kwargs.get("text_border_color", Color(255, 255, 255, 255))
+        self._text_border_color = kwargs.get("text_border_color", Color(0, 0, 0, 255))
         self._text_border_size = kwargs.get("text_border_size", 1)
 
         self._text_x_alignment = kwargs.get("text_x_alignment", TextXAlignment.CENTER)

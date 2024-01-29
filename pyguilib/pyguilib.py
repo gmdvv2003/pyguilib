@@ -35,9 +35,15 @@ class PyGui(PyGuiInstance):
         if not pygame.get_init():
             raise Exception("Pygame is not initialized")
 
-        self._root_quadtree = Quadtree(0, pygame.Rect(0, 0, *pygame.display.get_surface().get_size()))
+        self._root_quadtree_reference = Quadtree(
+            0, pygame.Rect(0, 0, *pygame.display.get_surface().get_size())
+        )
 
-        super(PyGui, self).__init__(position=UDim2(0, 0, 0, 0), size=UDim2(1, 0, 1, 0), name="PyGui")
+        self._BUILT = True
+
+        super(PyGui, self).__init__(
+            position=UDim2(0, 0, 0, 0), size=UDim2(1, 0, 1, 0), name="PyGui"
+        )
 
         instantiated_pygui_instances.append(self)
 
@@ -67,7 +73,9 @@ def update(events: List[Event]):
             print(f"An error occurred while updating a service: {traceback.format_exc()}")
 
     for pygui in instantiated_pygui_instances:
-        retrieved_childs = pygui._root_quadtree.query(pygame.Rect(*pygame.mouse.get_pos(), 1, 1))
+        retrieved_childs = pygui._root_quadtree_reference.query(
+            pygame.Rect(*pygame.mouse.get_pos(), 1, 1)
+        )
 
         if len(retrieved_childs) > 0:
             deepest_retrieved_child = retrieved_childs[-1].item

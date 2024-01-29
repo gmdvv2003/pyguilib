@@ -65,6 +65,7 @@ class PyGuiInstance(object):
         layout_order: int = 0,
         parent: Optional["PyGuiInstance"] = None,
         name: str = None,
+        **_,
     ) -> "PyGuiInstance":
         self._visible = True
 
@@ -205,11 +206,7 @@ class PyGuiInstance(object):
             self._parent._childrens[self._name] = self
 
             try:
-                self._root_quadtree_reference = (
-                    getattr(self._parent, "_root_quadtree_reference")
-                    if hasattr(self._parent, "_root_quadtree_reference")
-                    else getattr(self._parent, "_root_quadtree")
-                )
+                self._root_quadtree_reference = getattr(self._parent, "_root_quadtree_reference")
             except AttributeError:
                 pass
 
