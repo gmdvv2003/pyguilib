@@ -12,6 +12,16 @@ from pyguilib.utilities.udim import UDim, UDim2
 
 
 class PyGuiListLayout(PyGuiLayoutStyle):
+    """
+    PyGuiListLayout class represents a list layout style for a PyGui instance.
+
+    Inherits from:
+        PyGuiLayoutStyle
+
+    Args:
+        **kwargs: Additional keyword arguments passed to the parent class constructor.
+    """
+
     def __init__(self, **kwargs) -> "PyGuiListLayout":
         super(PyGuiListLayout, self).__init__(
             **kwargs,
@@ -31,20 +41,59 @@ class PyGuiListLayout(PyGuiLayoutStyle):
         self._right_margin = kwargs.get("right_margin", UDim(0, 0))
 
     def __on_layout_instance_child_added(self, child: PyGuiInstance):
+        """
+        Hook method called when a child is added.
+
+        Args:
+            child (PyGuiInstance): The added child PyGuiInstance.
+
+        Note:
+            Overrides the parent method to set initial position and anchor point for added child elements.
+        """
         child._add_property_override("position", UDim2(0, 0, 0, 0))
         child._add_property_override("anchor_point", Vector2(0, 0))
 
     def __on_layout_instance_child_removed(self, child: PyGuiInstance):
+        """
+        Hook method called when a child is removed.
+
+        Args:
+            child (PyGuiInstance): The removed child PyGuiInstance.
+
+        Note:
+            Overrides the parent method to remove position and anchor point overrides for removed child elements.
+        """
         child._remove_property_override("position")
         child._remove_property_override("anchor_point")
 
     def __on_layout_applied(self):
+        """
+        Hook method called when the layout is applied.
+
+        Note:
+            This method can be overridden to provide specific behavior when the layout is applied.
+        """
         pass
 
     def __on_layout_removed(self):
+        """
+        Hook method called when the layout is removed.
+
+        Note:
+            This method can be overridden to provide specific behavior when the layout is removed.
+        """
         pass
 
     def __layout_order_manager(self, childs: List[PyGuiInstance]):
+        """
+        Manages the order and positioning of child elements.
+
+        Args:
+            childs (List[PyGuiInstance]): List of child PyGuiInstance objects.
+
+        Note:
+            Overrides the parent method to implement the logic for ordering and positioning child elements.
+        """
         largest_child_width = 0
         largest_child_height = 0
 
@@ -65,9 +114,16 @@ class PyGuiListLayout(PyGuiLayoutStyle):
             match self.horizontal_alignment:
                 case HorizontalAlignment.LEFT:
                     if current_row_width + child_width > parent_instance_width:
-                        child_position_x_offset, current_row_width, current_row_height = 0, child_width, current_row_height + largest_child_height
+                        child_position_x_offset, current_row_width, current_row_height = (
+                            0,
+                            child_width,
+                            current_row_height + largest_child_height,
+                        )
                     else:
-                        child_position_x_offset, current_row_width = current_row_width, current_row_width + child_width
+                        child_position_x_offset, current_row_width = (
+                            current_row_width,
+                            current_row_width + child_width,
+                        )
                 case HorizontalAlignment.CENTER:
                     pass
                 case HorizontalAlignment.RIGHT:
@@ -78,7 +134,10 @@ class PyGuiListLayout(PyGuiLayoutStyle):
                             current_row_height + largest_child_height,
                         )
                     else:
-                        child_position_x_offset, current_row_width = parent_instance_width - current_row_width - child_width, current_row_width + child_width
+                        child_position_x_offset, current_row_width = (
+                            parent_instance_width - current_row_width - child_width,
+                            current_row_width + child_width,
+                        )
 
             match self.vertical_alignment:
                 case VerticalAlignment.TOP:

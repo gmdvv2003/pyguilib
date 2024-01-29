@@ -9,6 +9,23 @@ from pyguilib.components.pygui_instance import PyGuiInstance
 
 
 class ImageLabel(PyGuiInstance):
+    """
+    ImageLabel class representing an image label component.
+
+    Inherits from:
+        PyGuiInstance
+
+    Args:
+        **kwargs: Additional keyword arguments.
+
+    Raises:
+        Exception: If no image is provided or if there is an error loading the image.
+
+    Properties:
+        image_color (Color): The image color.
+        image_transparency (int): The image transparency.
+    """
+
     def __init__(self, **kwargs) -> "ImageLabel":
         image = kwargs.get("image", None)
         if image is None:
@@ -34,6 +51,12 @@ class ImageLabel(PyGuiInstance):
 
     @property
     def image_color(self) -> Color:
+        """
+        Property for getting the image color.
+
+        Returns:
+            Color: The image color.
+        """
         return self._image_color
 
     @image_color.setter
@@ -44,6 +67,12 @@ class ImageLabel(PyGuiInstance):
 
     @property
     def image_transparency(self) -> int:
+        """
+        Property for getting the image transparency.
+
+        Returns:
+            int: The image transparency.
+        """
         return self._image_transparency
 
     @image_transparency.setter
@@ -61,4 +90,4 @@ class ImageLabel(PyGuiInstance):
         image_surface_copy.set_alpha(self.image_transparency)
         image_surface_copy.fill(self.image_color, special_flags=pygame.BLEND_RGBA_MULT)
 
-        self.get_drawable_surface().blit(image_surface_copy, self.absolute_position)
+        self._get_drawable_surface().blit(image_surface_copy, self.absolute_position)

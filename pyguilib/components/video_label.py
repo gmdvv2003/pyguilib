@@ -10,6 +10,29 @@ from pyguilib.components.pygui_instance import PyGuiInstance
 
 
 class VideoLabel(PyGuiInstance):
+    """
+    VideoLabel class represents a GUI component for displaying a GIF.
+
+    Inherits from:
+        PyGuiInstance
+
+    Args:
+        **kwargs: Additional keyword arguments.
+
+    Raises:
+        Exception: If no GIF is provided or if there is an error loading the GIF.
+
+    Methods:
+        pause(): Placeholder method for pausing the GIF.
+        resume(): Placeholder method for resuming the GIF.
+
+    Properties:
+        current_gif_frame (int): Index of the current GIF frame.
+        gif_playback_speed (int): The GIF playback speed.
+        gif_color (Color): The GIF color.
+        gif_transparency (int): The GIF transparency.
+    """
+
     def __init__(self, **kwargs) -> "VideoLabel":
         gif = kwargs.get("gif", None)
         if gif is None:
@@ -52,18 +75,36 @@ class VideoLabel(PyGuiInstance):
 
     @property
     def current_gif_frame(self) -> int:
+        """
+        Calculates the index of the current GIF frame based on the playback speed.
+
+        Returns:
+            int: Index of the current GIF frame.
+        """
         return (
             int((time.time() - self.__gif_creating_timestamp) * (1000 / self._gif_reader.get_meta_data()["duration"]) * self._gif_playback_speed)
         ) % self._gif_reader.get_length()
 
     def pause():
+        """
+        Not implemented.
+        """
         pass
 
     def resume():
+        """
+        Not implemented.
+        """
         pass
 
     @property
     def gif_playback_speed(self) -> int:
+        """
+        Property for getting the GIF playback speed.
+
+        Returns:
+            int: The GIF playback speed.
+        """
         return self._gif_playback_speed
 
     @gif_playback_speed.setter
@@ -73,6 +114,12 @@ class VideoLabel(PyGuiInstance):
 
     @property
     def gif_color(self) -> Color:
+        """
+        Property for getting the GIF color.
+
+        Returns:
+            Color: The GIF color.
+        """
         return self._gif_color
 
     @gif_color.setter
@@ -82,6 +129,12 @@ class VideoLabel(PyGuiInstance):
 
     @property
     def gif_transparency(self) -> int:
+        """
+        Property for getting the GIF transparency.
+
+        Returns:
+            int: The GIF transparency.
+        """
         return self._gif_transparency
 
     @gif_transparency.setter
@@ -99,4 +152,4 @@ class VideoLabel(PyGuiInstance):
         current_frame.set_alpha(self.gif_transparency)
         current_frame.fill(self.gif_color, special_flags=pygame.BLEND_RGBA_MULT)
 
-        self.get_drawable_surface().blit(current_frame, self.absolute_position)
+        self._get_drawable_surface().blit(current_frame, self.absolute_position)

@@ -16,6 +16,49 @@ def default_cursor_apparence() -> pygame.Surface:
 
 
 class TextBox(TextLabel, PyGuiInstance):
+    """
+    TextBox class represents a GUI component for text input.
+
+    Inherits from:
+        TextLabel
+        PyGuiInstance
+
+    Args:
+        **kwargs: Additional keyword arguments.
+
+    Raises:
+        Exception: If there is an error loading the font.
+
+    Attributes:
+        focus_gained (PyGuiSignal): Signal emitted when the TextBox gains focus.
+        focus_lost (PyGuiSignal): Signal emitted when the TextBox loses focus.
+
+    Methods:
+        is_focused(): Check if the TextBox is currently focused.
+        capture_focus(): Capture focus for the TextBox.
+        release_focus(enter_pressed: bool = False): Release focus for the TextBox.
+        placeholder_text(): Get or set the placeholder text.
+        placeholder_text_color(): Get or set the color of the placeholder text.
+        placeholder_text_transparency(): Get or set the transparency of the placeholder text.
+        placeholder_text_font(): Get or set the font used for the placeholder text.
+        text_editable(): Get or set the flag indicating whether the text is editable.
+        clear_text_on_focus_lost(): Get or set the flag indicating whether to clear text on focus lost.
+        selection_start(): Get the starting index of the text selection.
+        selection_end(): Get the ending index of the text selection.
+        cursor_position(): Get the current cursor position in the text.
+
+    Properties:
+        placeholder_text (str): The current placeholder text.
+        placeholder_text_color (Color): The current color of the placeholder text.
+        placeholder_text_transparency (int): The current transparency of the placeholder text.
+        placeholder_text_font (pygame.font.Font): The current font used for the placeholder text.
+        text_editable (bool): True if the text is editable, False otherwise.
+        clear_text_on_focus_lost (bool): True if text should be cleared on focus lost, False otherwise.
+        selection_start (int): The starting index of the text selection.
+        selection_end (int): The ending index of the text selection.
+        cursor_position (int): The current cursor position.
+    """
+
     def __init__(self, **kwargs) -> "TextBox":
         super(TextBox, self).__init__(
             **kwargs,
@@ -170,18 +213,39 @@ class TextBox(TextLabel, PyGuiInstance):
 
     @property
     def is_focused(self) -> bool:
+        """
+        Check if the TextBox is currently focused.
+
+        Returns:
+            bool: True if the TextBox is focused, False otherwise.
+        """
         return self._is_focused
 
     def capture_focus(self):
+        """
+        Capture focus for the TextBox.
+        """
         if self._text_editable and not self._is_focused:
             self.focus_gained.fire()
 
     def release_focus(self, enter_pressed: bool = False):
+        """
+        Release focus for the TextBox.
+
+        Args:
+            enter_pressed (bool): Flag indicating whether the Enter key was pressed.
+        """
         if self._is_focused:
             self.focus_lost.fire(enter_pressed)
 
     @property
     def placeholder_text(self) -> str:
+        """
+        Get or set the placeholder text.
+
+        Returns:
+            str: The current placeholder text.
+        """
         return self._placeholder_text
 
     @placeholder_text.setter
@@ -192,6 +256,12 @@ class TextBox(TextLabel, PyGuiInstance):
 
     @property
     def placeholder_text_color(self) -> Color:
+        """
+        Get or set the color of the placeholder text.
+
+        Returns:
+            Color: The current color of the placeholder text.
+        """
         return self._placeholder_text_color
 
     @placeholder_text_color.setter
@@ -202,6 +272,12 @@ class TextBox(TextLabel, PyGuiInstance):
 
     @property
     def placeholder_text_transparency(self) -> int:
+        """
+        Get or set the transparency of the placeholder text.
+
+        Returns:
+            int: The current transparency of the placeholder text.
+        """
         return self._placeholder_text_transparency
 
     @placeholder_text_transparency.setter
@@ -212,6 +288,12 @@ class TextBox(TextLabel, PyGuiInstance):
 
     @property
     def placeholder_text_font(self) -> pygame.font.Font:
+        """
+        Get or set the font used for the placeholder text.
+
+        Returns:
+            pygame.font.Font: The current font used for the placeholder text.
+        """
         return self._placeholder_text_font
 
     @placeholder_text_font.setter
@@ -222,6 +304,12 @@ class TextBox(TextLabel, PyGuiInstance):
 
     @property
     def text_editable(self) -> bool:
+        """
+        Get or set the flag indicating whether the text is editable.
+
+        Returns:
+            bool: True if the text is editable, False otherwise.
+        """
         return self._text_editable
 
     @text_editable.setter
@@ -232,6 +320,12 @@ class TextBox(TextLabel, PyGuiInstance):
 
     @property
     def clear_text_on_focus_lost(self) -> bool:
+        """
+        Get or set the flag indicating whether to clear text on focus lost.
+
+        Returns:
+            bool: True if text should be cleared on focus lost, False otherwise.
+        """
         return self._clear_text_on_focus_lost
 
     @clear_text_on_focus_lost.setter
@@ -242,14 +336,32 @@ class TextBox(TextLabel, PyGuiInstance):
 
     @property
     def selection_start(self) -> int:
+        """
+        Get the starting index of the text selection.
+
+        Returns:
+            int: The starting index of the text selection.
+        """
         return self._selection_start
 
     @property
     def selection_end(self) -> int:
+        """
+        Get the ending index of the text selection.
+
+        Returns:
+            int: The ending index of the text selection.
+        """
         return self._selection_end
 
     @property
     def cursor_position(self) -> int:
+        """
+        Get the current cursor position in the text.
+
+        Returns:
+            int: The current cursor position.
+        """
         return self._cursor_position
 
     def __instance_updater(self, events: List[Event]):
@@ -257,7 +369,7 @@ class TextBox(TextLabel, PyGuiInstance):
 
     def __instance_drawer(self):
         if self._is_focused:
-            drawable_surface = self.get_drawable_surface()
+            drawable_surface = self._get_drawable_surface()
             if self._selection_start != self._selection_end:
                 selected_text = self._text[self._selection_start : self._selection_end]
             else:

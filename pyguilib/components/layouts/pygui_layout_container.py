@@ -3,6 +3,20 @@ from pyguilib.components.pygui_instance import PyGuiInstance
 
 
 class PyGuiLayoutContainer(object):
+    """
+    PyGuiLayoutContainer class serves as a container for managing layout styles applied to a PyGuiInstance.
+
+    Args:
+        **kwargs: Additional keyword arguments.
+
+    Methods:
+        applied_layout(self) -> PyGuiLayoutStyle: Getter method for the currently applied layout style.
+        apply_layout(self, layout: PyGuiLayoutStyle): Applies a layout style to the PyGuiInstance.
+
+    Properties:
+        applied_layout (PyGuiLayoutStyle): The currently applied layout style.
+    """
+
     def __init__(self, **kwargs) -> "PyGuiLayoutContainer":
         super(PyGuiLayoutContainer, self).__init__()
 
@@ -13,12 +27,27 @@ class PyGuiLayoutContainer(object):
 
     @property
     def applied_layout(self) -> PyGuiLayoutStyle:
+        """
+        Getter method for the currently applied layout style.
+
+        Returns:
+            PyGuiLayoutStyle: The currently applied layout style, or None if no layout is applied.
+        """
         try:
             return self._applied_layout
         except AttributeError:
             return None
 
     def apply_layout(self, layout: PyGuiLayoutStyle):
+        """
+        Applies a layout style to the PyGuiInstance.
+
+        Args:
+            layout (PyGuiLayoutStyle): The layout style to be applied.
+
+        Raises:
+            Exception: If more than one layout is attempted to be applied to a PyGuiInstance.
+        """
         layout._instance = self
 
         if self.applied_layout is not None:

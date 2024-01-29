@@ -11,6 +11,47 @@ from pyguilib.utilities.udim import UDim2
 
 
 class PyGuiInstance(object):
+    """
+    PyGuiInstance is the base class for GUI elements in a Pygame-based GUI library.
+
+    Args:
+        draw_order (int): The order in which the GUI instance is drawn.
+        background_color (Color): The background color of the GUI instance.
+        background_transparency (float): The transparency of the GUI instance background.
+        border_color (Color): The color of the GUI instance border.
+        border_size (int): The size of the GUI instance border.
+        position (UDim2): The position of the GUI instance relative to its parent.
+        size (UDim2): The size of the GUI instance relative to its parent.
+        anchor_point (Vector2): The anchor point around which the GUI instance is positioned and scaled.
+        layout_order (int): The order in which the GUI instance is laid out.
+        parent (Optional[PyGuiInstance]): The parent GUI instance.
+        name (str): The name of the GUI instance.
+
+    Methods:
+        build() -> "PyGuiInstance": Build the GUI instance and add it to the parent.
+        get_property_changed_signal(property_name: str) -> PyGuiSignal: Get the signal for property changes.
+        update(events: List[Event]): Update the GUI instance based on events.
+        clear(): Clear the GUI instance.
+        draw(): Draw the GUI instance.
+
+    Properties:
+        visible (bool): Property indicating whether the GUI instance is visible.
+        draw_order (int): Property indicating the draw order of the GUI instance.
+        background_color (Color): Property indicating the background color of the GUI instance.
+        background_transparency (float): Property indicating the transparency of the GUI instance background.
+        border_color (Color): Property indicating the border color of the GUI instance.
+        border_size (int): Property indicating the border size of the GUI instance.
+        position (UDim2): Property indicating the position of the GUI instance.
+        absolute_position (Vector2): Property indicating the absolute position of the GUI instance.
+        size (UDim2): Property indicating the size of the GUI instance.
+        absolute_size (Vector2): Property indicating the absolute size of the GUI instance.
+        anchor_point (Vector2): Property indicating the anchor point of the GUI instance.
+        layout_order (int): Property indicating the layout order of the GUI instance.
+        parent (Optional[PyGuiInstance]): Property indicating the parent GUI instance.
+        name (str): Property indicating the name of the GUI instance.
+        BLOCKING_SCREEN_BUFFER_UPDATE (int): Property to block screen buffer updates.
+    """
+
     def __init__(
         self,
         draw_order: int = 0,
@@ -24,7 +65,6 @@ class PyGuiInstance(object):
         layout_order: int = 0,
         parent: Optional["PyGuiInstance"] = None,
         name: str = None,
-        **_,
     ) -> "PyGuiInstance":
         self._visible = True
 
@@ -114,8 +154,6 @@ class PyGuiInstance(object):
                 self._parent.clear()
                 self._parent.draw()
 
-            # print(f'Updating {self._name}')
-
         return decorator
 
     def _invoke_property_change_listener(self, property_name: str):
@@ -141,7 +179,23 @@ class PyGuiInstance(object):
     def _remove_property_override(self, property_name: str):
         del self._properties_overrides[property_name]
 
+    def _get_drawable_surface(self) -> Surface:
+        """
+        Get the drawable surface for rendering.
+
+        Returns:
+            Surface: The drawable surface.
+        """
+        return pygame.display.get_surface()
+
     def build(self) -> "PyGuiInstance":
+        """
+        Build the GUI element and add it to the parent.
+
+        Returns:
+            PyGuiInstance: The GUI element.
+        """
+
         if self._BUILT:
             return self
 
@@ -171,15 +225,27 @@ class PyGuiInstance(object):
 
         return self
 
-    def get_drawable_surface(self) -> Surface:
-        return pygame.display.get_surface()
-
     def get_property_changed_signal(self, property_name: str) -> PyGuiSignal:
+        """
+        Get the signal for a property change.
+
+        Parameters:
+            property_name (str): The name of the property.
+
+        Returns:
+            PyGuiSignal: The signal for the property change.
+        """
         assert property_name in self._properties_listeners, f"Property {property_name} is not registered"
         return self._properties_listeners[property_name]
 
     @property
-    def BLOCKING_SCREEN_BUFFER_UPDATE(self) -> int:
+    def BLOCKING_SCREEN_BUFFER_UPDATE(self) -> bool:
+        """
+        Property for controlling blocking of screen buffer updates.
+
+        Returns:
+            bool: Whether screen buffer updates are blocked.
+        """
         return self._parent._BLOCKING_SCREEN_BUFFER_UPDATE > 0
 
     @BLOCKING_SCREEN_BUFFER_UPDATE.setter
@@ -189,6 +255,12 @@ class PyGuiInstance(object):
 
     @property
     def visible(self) -> bool:
+        """
+        Property for controlling the visibility of the GUI element.
+
+        Returns:
+            bool: The visibility of the GUI element.
+        """
         return self._visible
 
     @visible.setter
@@ -199,6 +271,12 @@ class PyGuiInstance(object):
 
     @property
     def draw_order(self) -> int:
+        """
+        Property for controlling the draw order of the GUI element.
+
+        Returns:
+            int: The draw order of the GUI element.
+        """
         return self._draw_order
 
     @draw_order.setter
@@ -209,6 +287,12 @@ class PyGuiInstance(object):
 
     @property
     def background_color(self) -> Color:
+        """
+        Property for controlling the background color of the GUI element.
+
+        Returns:
+            Color: The background color of the GUI element.
+        """
         return self._background_color
 
     @background_color.setter
@@ -219,6 +303,12 @@ class PyGuiInstance(object):
 
     @property
     def border_color(self) -> Color:
+        """
+        Property for controlling the border color of the GUI element.
+
+        Returns:
+            Color: The border color of the GUI element.
+        """
         return self._border_color
 
     @border_color.setter
@@ -229,6 +319,12 @@ class PyGuiInstance(object):
 
     @property
     def background_transparency(self) -> float:
+        """
+        Property for controlling the transparency of the GUI element background.
+
+        Returns:
+            float: The transparency of the GUI element background.
+        """
         return self._background_transparency
 
     @background_transparency.setter
@@ -239,6 +335,12 @@ class PyGuiInstance(object):
 
     @property
     def border_size(self) -> int:
+        """
+        Property for controlling the border size of the GUI element.
+
+        Returns:
+            int: The border size of the GUI element.
+        """
         return self._border_size
 
     @border_size.setter
@@ -249,6 +351,12 @@ class PyGuiInstance(object):
 
     @property
     def position(self) -> UDim2:
+        """
+        Property for controlling the position of the GUI element.
+
+        Returns:
+            UDim2: The position of the GUI element.
+        """
         return self._get_overrided_property("position") or self._position
 
     @position.setter
@@ -259,6 +367,12 @@ class PyGuiInstance(object):
 
     @property
     def absolute_position(self) -> Vector2:
+        """
+        Property for getting the absolute position of the GUI element.
+
+        Returns:
+            Vector2: The absolute position of the GUI element.
+        """
         parent_absolute_position = self.parent.absolute_position if self.parent else Vector2(0, 0)
         parent_absolute_size = self.parent.absolute_size if self.parent else Vector2(*pygame.display.get_surface().get_size())
 
@@ -269,6 +383,12 @@ class PyGuiInstance(object):
 
     @property
     def size(self) -> UDim2:
+        """
+        Property for controlling the size of the GUI element.
+
+        Returns:
+            UDim2: The size of the GUI element.
+        """
         return self._get_overrided_property("size") or self._size
 
     @size.setter
@@ -279,6 +399,12 @@ class PyGuiInstance(object):
 
     @property
     def absolute_size(self) -> Vector2:
+        """
+        Property for getting the absolute size of the GUI element.
+
+        Returns:
+            Vector2: The absolute size of the GUI element.
+        """
         parent_absolute_size = self.parent.absolute_size if self.parent else Vector2(*pygame.display.get_surface().get_size())
 
         return Vector2(
@@ -288,6 +414,12 @@ class PyGuiInstance(object):
 
     @property
     def anchor_point(self) -> Vector2:
+        """
+        Property for controlling the anchor point of the GUI element.
+
+        Returns:
+            Vector2: The anchor point of the GUI element.
+        """
         return self._get_overrided_property("anchor_point") or self._anchor_point
 
     @anchor_point.setter
@@ -298,6 +430,12 @@ class PyGuiInstance(object):
 
     @property
     def layout_order(self) -> int:
+        """
+        Property for controlling the layout order of the GUI element.
+
+        Returns:
+            int: The layout order of the GUI element.
+        """
         return self._layout_order
 
     @layout_order.setter
@@ -307,6 +445,12 @@ class PyGuiInstance(object):
 
     @property
     def parent(self) -> Optional["PyGuiInstance"]:
+        """
+        Property for getting the parent GUI element.
+
+        Returns:
+            Optional[PyGuiInstance]: The parent GUI element.
+        """
         return self._parent
 
     @parent.setter
@@ -315,6 +459,12 @@ class PyGuiInstance(object):
 
     @property
     def name(self) -> str:
+        """
+        Property for getting the name of the GUI element.
+
+        Returns:
+            str: The name of the GUI element.
+        """
         return self._name
 
     @name.setter
@@ -322,6 +472,12 @@ class PyGuiInstance(object):
         self._parent._childrens[value] = self._parent._childrens.pop(self._name)
 
     def update(self, events: List[Event]):
+        """
+        Update the GUI element based on the given events.
+
+        Parameters:
+            events (List[Event]): The events to update the GUI element with.
+        """
         for instance_updater in self.__instance_updaters:
             instance_updater(events)
 
@@ -329,9 +485,15 @@ class PyGuiInstance(object):
             child.update(events)
 
     def clear(self):
+        """
+        Clear the GUI element.
+        """
         pass
 
     def draw(self):
+        """
+        Draw the GUI element on the screen.
+        """
         if self.visible:
             self._surface = Surface(self.absolute_size, SRCALPHA)
 
@@ -353,7 +515,7 @@ class PyGuiInstance(object):
                             self.border_size,
                         )
 
-            self.get_drawable_surface().blit(self._surface, self.absolute_position)
+            self._get_drawable_surface().blit(self._surface, self.absolute_position)
 
             for instance_drawer in self.__instance_drawers:
                 instance_drawer()

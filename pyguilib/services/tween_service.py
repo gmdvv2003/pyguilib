@@ -12,6 +12,16 @@ from pyguilib.utilities.udim import UDim2
 
 
 class TweenStatus(Enum):
+    """
+    Enumeration representing the status of a Tween.
+
+    Attributes:
+        PLAYING (int): The Tween is currently playing.
+        PAUSED (int): The Tween is paused.
+        CANCELED (int): The Tween has been canceled.
+        ENDED (int): The Tween has ended.
+    """
+
     PLAYING = 0
     PAUSED = 1
     CANCELED = 2
@@ -19,6 +29,23 @@ class TweenStatus(Enum):
 
 
 class TweenType(Enum):
+    """
+    Enumeration representing different types of tweens.
+
+    Attributes:
+        LINEAR (int): Linear interpolation.
+        SINE_IN, SINE_OUT, SINE_IN_OUT (int): Sine easing functions.
+        QUAD_IN, QUAD_OUT, QUAD_IN_OUT (int): Quadratic easing functions.
+        CUBIC_IN, CUBIC_OUT, CUBIC_IN_OUT (int): Cubic easing functions.
+        QUART_IN, QUART_OUT, QUART_IN_OUT (int): Quartic easing functions.
+        QUINT_IN, QUINT_OUT, QUINT_IN_OUT (int): Quintic easing functions.
+        EXPO_IN, EXPO_OUT, EXPO_IN_OUT (int): Exponential easing functions.
+        CIRC_IN, CIRC_OUT, CIRC_IN_OUT (int): Circular easing functions.
+        BACK_IN, BACK_OUT, BACK_IN_OUT (int): Back easing functions.
+        ELASTIC_IN, ELASTIC_OUT, ELASTIC_IN_OUT (int): Elastic easing functions.
+        BOUNCE_IN, BOUNCE_OUT, BOUNCE_IN_OUT (int): Bounce easing functions.
+    """
+
     LINEAR = 0
 
     SINE_IN = 1
@@ -240,6 +267,24 @@ instantiated_tweens = []
 
 
 class Tween(object):
+    """
+    Represents a tween animation.
+
+    Args:
+        instance (PyGuiInstance): The PyGuiInstance to be tweened.
+        properties (Dict[str, Any]): A dictionary of properties to be tweened.
+        duration (float): The duration of the tween in seconds.
+        tween_type (TweenType): The type of tween to be used.
+
+    Methods:
+        play(self): Starts or resumes the tween.
+        pause(self): Pauses the tween (Not implemented).
+        cancel(self): Cancels the tween and resets the PyGuiInstance properties.
+
+    Properties:
+        alpha (float): Current progress of the tween as a value between 0 and 1.
+    """
+
     def __init__(
         self,
         instance: PyGuiInstance,
@@ -340,9 +385,16 @@ class Tween(object):
 
     @property
     def alpha(self) -> float:
+        """
+        Current progress of the tween as a value between 0 and 1.
+
+        Returns:
+            float: Current progress of the tween as a value between 0 and 1.
+        """
         return max(0, min(1, (time.time() - self._start_time) / self._duration))
 
     def play(self):
+        """Starts or resumes the tween."""
         if self._tween_status == TweenStatus.PLAYING:
             raise Exception("Tween is already playing")
 
@@ -359,9 +411,11 @@ class Tween(object):
         self.tween_ended.connect(on_tween_ended)
 
     def pause(self):
+        """Not implemented."""
         pass
 
     def cancel(self):
+        """Cancels the tween and resets the PyGuiInstance properties."""
         for property_name, _ in self._properties.items():
             self._instance[property_name] = self._original_properties[property_name]
 
@@ -369,6 +423,12 @@ class Tween(object):
 
 
 def update(events: List[Event]):
+    """
+    Updates all active tweens.
+
+    Args:
+        events (List[Event]): List of pygame events.
+    """
     for tween in instantiated_tweens:
         tween._instance.BLOCKING_SCREEN_BUFFER_UPDATE = True
 

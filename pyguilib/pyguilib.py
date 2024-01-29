@@ -24,22 +24,31 @@ last_pygame_window_size = None
 
 
 class PyGui(PyGuiInstance):
+    """
+    PyGui class representing the main PyGui instance.
+
+    Raises:
+        Exception: If pygame is not initialized.
+    """
+
     def __init__(self) -> "PyGui":
         if not pygame.get_init():
             raise Exception("Pygame is not initialized")
 
-        self._root_quadtree = Quadtree(
-            0, pygame.Rect(0, 0, *pygame.display.get_surface().get_size())
-        )
+        self._root_quadtree = Quadtree(0, pygame.Rect(0, 0, *pygame.display.get_surface().get_size()))
 
-        super(PyGui, self).__init__(
-            position=UDim2(0, 0, 0, 0), size=UDim2(1, 0, 1, 0), name="PyGui"
-        )
+        super(PyGui, self).__init__(position=UDim2(0, 0, 0, 0), size=UDim2(1, 0, 1, 0), name="PyGui")
 
         instantiated_pygui_instances.append(self)
 
 
 def update(events: List[Event]):
+    """
+    Update function for PyGui, responsible for handling events and updating services.
+
+    Args:
+        events (List[Event]): List of pygame events.
+    """
     global current_mouse_over_instance, last_mouse_over_instance
     global last_pygame_window_size
 

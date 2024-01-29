@@ -57,6 +57,34 @@ def _circle_points(radius):
 
 
 class TextLabel(PyGuiInstance):
+    """
+    TextLabel class represents a GUI component for displaying text.
+
+    Inherits from:
+        PyGuiInstance
+
+    Args:
+        **kwargs: Additional keyword arguments.
+
+    Raises:
+        Exception: If there is an error loading the font.
+
+    Methods:
+        text_position(): Calculates the position of the text based on alignment.
+        text_bounds(): Gets the bounding box of the text.
+
+    Properties:
+        text (str): The text content.
+        text_color (Color): The text color.
+        text_transparency (int): The text transparency.
+        text_size (int): The text size.
+        text_font (pygame.font.Font): The text font.
+        text_border_color (Color): The text border color.
+        text_border_size (int): The text border size.
+        text_x_alignment (TextXAlignment): The text horizontal alignment.
+        text_y_alignment (TextYAlignment): The text vertical alignment.
+    """
+
     def __init__(self, **kwargs) -> "TextLabel":
         super(TextLabel, self).__init__(
             **kwargs,
@@ -114,6 +142,12 @@ class TextLabel(PyGuiInstance):
 
     @property
     def text(self) -> str:
+        """
+        Get or set the text content of the TextLabel.
+
+        Returns:
+            str: The current text content.
+        """
         return "".join(self._text)
 
     @text.setter
@@ -124,6 +158,12 @@ class TextLabel(PyGuiInstance):
 
     @property
     def text_color(self) -> Color:
+        """
+        Get or set the color of the text within the TextLabel.
+
+        Returns:
+            Color: The current color of the text.
+        """
         return self._text_color
 
     @text_color.setter
@@ -134,6 +174,12 @@ class TextLabel(PyGuiInstance):
 
     @property
     def text_transparency(self) -> int:
+        """
+        Get or set the transparency of the text within the TextLabel.
+
+        Returns:
+            int: The current transparency of the text.
+        """
         return self._text_transparency
 
     @text_transparency.setter
@@ -144,6 +190,12 @@ class TextLabel(PyGuiInstance):
 
     @property
     def text_size(self) -> int:
+        """
+        Get or set the size of the text within the TextLabel.
+
+        Returns:
+            int: The current size of the text.
+        """
         return self._text_size
 
     @text_size.setter
@@ -154,6 +206,12 @@ class TextLabel(PyGuiInstance):
 
     @property
     def text_font(self) -> pygame.font.Font:
+        """
+        Get or set the font used for the text within the TextLabel.
+
+        Returns:
+            pygame.font.Font: The current font used for the text.
+        """
         return self._text_font
 
     @text_font.setter
@@ -164,6 +222,12 @@ class TextLabel(PyGuiInstance):
 
     @property
     def text_border_color(self) -> Color:
+        """
+        Get or set the color of the text border within the TextLabel.
+
+        Returns:
+            Color: The current color of the text border.
+        """
         return self._text_border_color
 
     @text_border_color.setter
@@ -174,6 +238,12 @@ class TextLabel(PyGuiInstance):
 
     @property
     def text_border_size(self) -> int:
+        """
+        Get or set the size of the text border within the TextLabel.
+
+        Returns:
+            int: The current size of the text border.
+        """
         return self._text_border_size
 
     @text_border_size.setter
@@ -184,6 +254,12 @@ class TextLabel(PyGuiInstance):
 
     @property
     def text_x_alignment(self) -> TextXAlignment:
+        """
+        Get or set the horizontal alignment of the text within the TextLabel.
+
+        Returns:
+            TextXAlignment: The current horizontal alignment.
+        """
         return self._text_x_alignment
 
     @text_x_alignment.setter
@@ -193,6 +269,12 @@ class TextLabel(PyGuiInstance):
 
     @property
     def text_y_alignment(self) -> TextYAlignment:
+        """
+        Get or set the vertical alignment of the text within the TextLabel.
+
+        Returns:
+            TextYAlignment: The current vertical alignment.
+        """
         return self._text_y_alignment
 
     @text_y_alignment.setter
@@ -202,6 +284,12 @@ class TextLabel(PyGuiInstance):
 
     @property
     def text_position(self) -> Vector2:
+        """
+        Get the position of the text based on alignment within the TextLabel.
+
+        Returns:
+            Vector2: The position of the text.
+        """
         return Vector2(
             self.absolute_position.x + (self.absolute_size.x - self._text_bounds.x) * text_x_alignment_offsets[self._text_x_alignment.value],
             self.absolute_position.y + (self.absolute_size.y - self._text_bounds.y) * text_y_alignment_offsets[self._text_y_alignment.value],
@@ -209,6 +297,12 @@ class TextLabel(PyGuiInstance):
 
     @property
     def text_bounds(self) -> Vector2:
+        """
+        Get the bounding box of the text.
+
+        Returns:
+            Vector2: The bounding box dimensions (width, height).
+        """
         return self._text_bounds
 
     def __instance_updater(self, events: List[Event]):
@@ -238,7 +332,7 @@ class TextLabel(PyGuiInstance):
 
             (text_position_x, text_position_y) = self.text_position
 
-            self.get_drawable_surface().blit(
+            self._get_drawable_surface().blit(
                 drawable_text_surface,
                 (
                     text_position_x + line_x,
