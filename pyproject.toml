@@ -1,0 +1,18 @@
+[build-system]
+requires = [ "setuptools>=61.0.0", "wheel", ]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pyguilib"
+version = "0.0.2"
+dependencies = [ "pygame", "imageio", ]
+requires-python = ">=3.8"
+authors = [{ name = "Guilherme Daghlian", email = "gm.daghlian@gmail.com" }]
+description = "Graphical User Interface made for the Pygame multimedia applications library with the intention to facilitate the creation and/or management of the user interface."
+readme = "README.md"
+license = { file = "LICENSE" }
+classifiers = [ "Development Status :: 3 - Alpha", "Operating System :: OS Independent", "License :: OSI Approved :: MIT License", "Programming Language :: Python :: 3", ]
+keywords = [ "Graphical User Interface", "User Interface", "PyGame", "Game", ]
+
+[project.urls]
+Homepage = "https://github.com/gmdvv2003/pyguilib"
