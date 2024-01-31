@@ -20,6 +20,14 @@ class PyGuiListLayout(PyGuiLayoutStyle):
 
     Args:
         **kwargs: Additional keyword arguments passed to the parent class constructor.
+
+    Properties:
+        horizontal_padding (UDim): The horizontal padding for child instances.
+        vertical_padding (UDim): The vertical padding for child instances.
+        top_margin (UDim): The top margin for child instances.
+        bottom_margin (UDim): The bottom margin for child instances.
+        left_margin (UDim): The left margin for child instances.
+        right_margin (UDim): The right margin for child instances.
     """
 
     def __init__(self, **kwargs) -> "PyGuiListLayout":
@@ -39,6 +47,90 @@ class PyGuiListLayout(PyGuiLayoutStyle):
         self._bottom_margin = kwargs.get("bottom_margin", UDim(0, 0))
         self._left_margin = kwargs.get("left_margin", UDim(0, 0))
         self._right_margin = kwargs.get("right_margin", UDim(0, 0))
+
+    @property
+    def horizontal_padding(self) -> UDim:
+        """
+        The horizontal padding for child instances.
+
+        Returns:
+            UDim: The horizontal padding for child instances.
+        """
+        return self._horizontal_padding
+
+    @horizontal_padding.setter
+    def horizontal_padding(self, value: UDim):
+        self._horizontal_padding = value
+
+    @property
+    def vertical_padding(self) -> UDim:
+        """
+        The vertical padding for child instances.
+
+        Returns:
+            UDim: The vertical padding for child instances.
+        """
+        return self._vertical_padding
+
+    @vertical_padding.setter
+    def vertical_padding(self, value: UDim):
+        self._vertical_padding = value
+
+    @property
+    def top_margin(self) -> UDim:
+        """
+        The top margin for child instances.
+
+        Returns:
+            UDim: The top margin for child instances.
+        """
+        return self._top_margin
+
+    @top_margin.setter
+    def top_margin(self, value: UDim):
+        self._top_margin = value
+
+    @property
+    def bottom_margin(self) -> UDim:
+        """
+        The bottom margin for child instances.
+
+        Returns:
+            UDim: The bottom margin for child instances.
+        """
+        return self._bottom_margin
+
+    @bottom_margin.setter
+    def bottom_margin(self, value: UDim):
+        self._bottom_margin = value
+
+    @property
+    def left_margin(self) -> UDim:
+        """
+        The left margin for child instances.
+
+        Returns:
+            UDim: The left margin for child instances.
+        """
+        return self._left_margin
+
+    @left_margin.setter
+    def left_margin(self, value: UDim):
+        self._left_margin = value
+
+    @property
+    def right_margin(self) -> UDim:
+        """
+        The right margin for child instances.
+
+        Returns:
+            UDim: The right margin for child instances.
+        """
+        return self._right_margin
+
+    @right_margin.setter
+    def right_margin(self, value: UDim):
+        self._right_margin = value
 
     def __on_layout_instance_child_added(self, child: PyGuiInstance):
         """

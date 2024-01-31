@@ -314,7 +314,7 @@ class Tween(object):
 
         self._start_time = 0
         self._end_time = 0
-
+        
         match tween_type:
             case TweenType.LINEAR:
                 self._tween_function = lambda alpha: alpha

@@ -9,12 +9,30 @@ from pyguilib.components.pygui_instance import PyGuiInstance
 
 
 class TextXAlignment(Enum):
+    """
+    Enum representing horizontal alignment options for text.
+
+    Attributes:
+        LEFT (int): Align text to the left.
+        CENTER (int): Center-align text.
+        RIGHT (int): Align text to the right.
+    """
+
     LEFT = 0
     CENTER = 1
     RIGHT = 2
 
 
 class TextYAlignment(Enum):
+    """
+    Enum representing vertical alignment options for text.
+
+    Attributes:
+        TOP (int): Align text to the top.
+        CENTER (int): Center-align text vertically.
+        BOTTOM (int): Align text to the bottom.
+    """
+
     TOP = 0
     CENTER = 1
     BOTTOM = 2

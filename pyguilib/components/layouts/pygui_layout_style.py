@@ -5,6 +5,15 @@ from pyguilib.components.pygui_instance import PyGuiInstance
 
 
 class HorizontalAlignment(Enum):
+    """
+    Enumeration for horizontal alignment options.
+
+    Attributes:
+        LEFT (int): Aligns child instances to the left of the parent instance.
+        CENTER (int): Aligns child instances to the center of the parent instance.
+        RIGHT (int): Aligns child instances to the right of the parent instance.
+    """
+
     LEFT = 0
     CENTER = 1
     RIGHT = 2
@@ -45,6 +54,7 @@ class SortOrder(Enum):
     Attributes:
         NAME (int): Sorts child instances by name.
         LAYOUT_ORDER (int): Sorts child instances by layout order.
+        CUSTOM (int): Sorts child instances by custom order.
     """
 
     NAME = 0
