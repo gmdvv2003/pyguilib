@@ -27,12 +27,18 @@ class UDim(object):
 
     @property
     def scale(self) -> float:
-        """Returns the scaling factor of the UDim."""
+        """
+        Returns:
+            float: The scaling factor of the UDim.
+        """
         return self._vector.x
 
     @property
     def offset(self) -> float:
-        """Returns the offset of the UDim."""
+        """
+        Returns:
+            float: The offset of the UDim.
+        """
         return self._vector.y
 
     def __add__(self, other: "UDim") -> "UDim":
@@ -89,22 +95,34 @@ class UDim2(object):
 
     @property
     def x(self) -> UDim:
-        """Returns the UDim instance for the X dimension."""
+        """
+        Returns:
+            UDim: The UDim instance for the X dimension.
+        """
         return self._x
 
     @x.setter
     def x(self, value: UDim):
-        """Sets the UDim instance for the X dimension."""
+        """
+        Returns:
+            UDim: The UDim instance for the X dimension.
+        """
         self._x = value
 
     @property
     def y(self) -> UDim:
-        """Returns the UDim instance for the Y dimension."""
+        """
+        Returns:
+            UDim: The UDim instance for the Y dimension.
+        """
         return self._y
 
     @y.setter
     def y(self, value: UDim):
-        """Sets the UDim instance for the Y dimension."""
+        """
+        Returns:
+            UDim: The UDim instance for the Y dimension.
+        """
         self._y = value
 
     def __add__(self, other: "UDim2") -> "UDim2":

@@ -3,6 +3,7 @@ from typing import List
 from pygame import Vector2
 
 from pyguilib.components.layouts.pygui_layout_style import (
+    FillDirection,
     HorizontalAlignment,
     PyGuiLayoutStyle,
     VerticalAlignment,
@@ -195,6 +196,13 @@ class PyGuiListLayout(PyGuiLayoutStyle):
         (parent_instance_x_position, parent_instance_y_position) = self.instance.absolute_position
         (parent_instance_width, parent_instance_height) = self.instance.absolute_size
 
+        if self.fill_direction == FillDirection.VERTICAL:
+            parent_instance_width, parent_instance_height = parent_instance_height, parent_instance_width
+
+        # Used by HorizontalAlignment.CENTER only
+        last_row_index = 0
+        current_row_index = 0
+
         for child in childs:
             child.BLOCKING_SCREEN_BUFFER_UPDATE = True
 
@@ -216,8 +224,25 @@ class PyGuiListLayout(PyGuiLayoutStyle):
                             current_row_width,
                             current_row_width + child_width,
                         )
+
                 case HorizontalAlignment.CENTER:
-                    pass
+                    if current_row_width + child_width > parent_instance_width:
+                        child_position_x_offset, current_row_width, current_row_height = (
+                            (parent_instance_width - child_width) / 2,
+                            child_width,
+                            current_row_height + largest_child_height,
+                        )
+
+                        last_row_index = current_row_index
+                    else:
+                        for child in childs[last_row_index : current_row_index + 1]:
+                            child._add_property_override("position", UDim2(0, child.position.x.offset - child_width / 2, 0, child.position.y.offset))
+
+                        child_position_x_offset, current_row_width = (
+                            (parent_instance_width - child_width + current_row_width) / 2,
+                            current_row_width + child_width,
+                        )
+
                 case HorizontalAlignment.RIGHT:
                     if current_row_width + child_width > parent_instance_width:
                         child_position_x_offset, current_row_width, current_row_height = (
@@ -234,13 +259,19 @@ class PyGuiListLayout(PyGuiLayoutStyle):
             match self.vertical_alignment:
                 case VerticalAlignment.TOP:
                     child_position_y_offset = current_row_height
+
                 case VerticalAlignment.CENTER:
-                    pass
+                    assert False, "VerticalAlignment.CENTER is not implemented for PyGuiListLayout yet."
                 case VerticalAlignment.BOTTOM:
                     child_position_y_offset = parent_instance_height - child_height - current_row_height
 
+            current_row_index += 1
+
             largest_child_width = max(largest_child_width, child_width)
             largest_child_height = max(largest_child_height, child_height)
+
+            if self.fill_direction == FillDirection.VERTICAL:
+                child_position_x_offset, child_position_y_offset = child_position_y_offset, child_position_x_offset
 
             child._add_property_override("position", UDim2(0, child_position_x_offset, 0, child_position_y_offset))
 
