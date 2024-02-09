@@ -395,7 +395,7 @@ pip install pyguilib
 
   ![alt text](https://i.imgur.com/5D6oHUf.png)
   
-  <i>TweenService is used as an interface to directly apply constant</i>
+  <i>TweenService is used as an interface to directly apply constant properties updates.</i>
   * <details>
     <summary>Classes</summary>
 
@@ -414,7 +414,6 @@ pip install pyguilib
           tween_type = TweenType.LINEAR
         )
       ```
-      + `gif_playback_speed` (str): The GIF playback speed.
       + `instance` (PyGuiInstance): The PyGuiInstance to be tweened.
       + `properties` (Dict[str, Any]): A dictionary of properties to be tweened.
       + `duration` (float): The duration of the tween in seconds.
